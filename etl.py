@@ -1,9 +1,11 @@
 import pandas as pd # type: ignore
 import os # Biblioteca para se comunicar com o sistema operacional
 import glob
+from utils_log import log_decorator
 
 # Função de extract que le e consolida
 
+@log_decorator
 def extrair_dados_e_consolidar(pasta: str) -> pd.DataFrame: # Aqui criamos a função declarando o nosso parâmetro que chamos só dentro da função.
     arquivos_json = glob.glob(os.path.join(pasta,'*.json')) # Como são vários arquivos json usamos o glob e o os para listar e fazer um join em tudo o que estiver dentro da pasta data e tenham qualquer nome (*) com .json.
     df_list = [pd.read_json(arquivo)for arquivo in arquivos_json] # Agora com o for nos estamos lendo cada arquivo dentro dos arquivos_json e tranformar em um json.
@@ -12,12 +14,14 @@ def extrair_dados_e_consolidar(pasta: str) -> pd.DataFrame: # Aqui criamos a fun
 
 # Função que transforma
 
+@log_decorator
 def calcular_kpi_de_total_de_vendas(df: pd.DataFrame) -> pd.DataFrame:
     df['Total'] = df['Quantidade'] * df['Venda']
     return df
 
 # Função que da load em csv ou parque
 
+@log_decorator
 def carregar_dados(df: pd.DataFrame, formato_saida: list): # Aqui criamos um parâmetro onde o output vai poder ser um csv, parquet ou os dois. Esse def vai ter uma caracteristica de procedure, porque ele não vai ter return, queremos só que ela salve.
     for formato in formato_saida: # Aqui tivemos que criar um for para interar sobre os metodos de saida.
         if formato == 'csv':
@@ -27,6 +31,7 @@ def carregar_dados(df: pd.DataFrame, formato_saida: list): # Aqui criamos um par
 
 # Função para a pipeline do usuário final:
 
+@log_decorator
 def pipeline_calcular_kpi_de_vendas_consolidado(pasta: str, formato_de_saida: list): # Criamos essa função para facilitar para o usuário
     data_frame = extrair_dados_e_consolidar(pasta)
     data_frame_calculado = calcular_kpi_de_total_de_vendas(data_frame)
