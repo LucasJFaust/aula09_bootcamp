@@ -1,4 +1,4 @@
-from loguru import logger
+from loguru import logger # type: ignore
 from sys import stderr
 from functools import wraps
 
@@ -17,7 +17,7 @@ logger.add(
             )
 
 def log_decorator(func):
-    @wraps(func)
+    @wraps(func) # Esse decorador faz com a função que recebe uma função não perca as caracteristicas originais dela. 
     def wrapper(*args, **kwargs):
         logger.info(f"Chamando função '{func.__name__}' com args {args} e kwargs {kwargs}")
         try:

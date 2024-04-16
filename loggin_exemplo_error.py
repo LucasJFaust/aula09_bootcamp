@@ -1,4 +1,4 @@
-from loguru import logger
+from loguru import logger # type: ignore
 
 logger.debug("Um aviso para o desenvolvedor (ou eu mesmo) no futuro")
 logger.info("Informação Importante do processo")

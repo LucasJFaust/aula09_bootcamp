@@ -1,28 +1,11 @@
-from loguru import logger
-from sys import stderr
+from utils_log import log_decorator
 
-# Config do log que aparece no print:
-logger.add(
-                sink=stderr,
-                format="{time} <r>{level}</r> <g>{message}</g> {file}",
-                level="INFO"
-            )
+# Utilizamos no pydantic e pandera o @:
 
-# Config log que vou salvar:
-logger.add(
-                "meu_arquivo_de_logs.log",
-                format="{time} {level} {message} {file}",
-                level="CRITICAL"
-            )
-
-
+@log_decorator
 def soma(x, y):
-    try:
-        soma = x + y
-        logger.info(f"Voce digitou valores corretos, parabéns {soma}")
-        return soma
-    except:
-        logger.critical("Digite valores corretos")
+    return x + y
+
 
 
 soma(2,3)
